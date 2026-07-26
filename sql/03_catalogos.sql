@@ -1,47 +1,53 @@
 /* =========================================================
    PROYECTO FRAMED
    Archivo: 03_catalogos.sql
-   Descripción: Datos iniciales de catálogos del sistema
+   Descripción: Datos iniciales de los catálogos del sistema
    Motor: Oracle Database
    ========================================================= */
 
 
 /* =========================================================
-   ESTADOS
+   ESTADOS DE ESTABLECIMIENTO
    ========================================================= */
 
--- Estados de establecimientos
+INSERT INTO ESTADO (NOMBRE, DESCRIPCION)
+VALUES ('ACTIVO', 'Establecimiento habilitado y en funcionamiento');
 
--- Estados de reportes
+INSERT INTO ESTADO (NOMBRE, DESCRIPCION)
+VALUES ('INACTIVO', 'Establecimiento que no se encuentra en funcionamiento');
 
--- Estados de novedades
+INSERT INTO ESTADO (NOMBRE, DESCRIPCION)
+VALUES ('SUSPENDIDO', 'Establecimiento con suspensión temporal');
+
+INSERT INTO ESTADO (NOMBRE, DESCRIPCION)
+VALUES ('CERRADO', 'Establecimiento con cierre definitivo');
+
+
+/* =========================================================
+   ESTADOS DE REPORTE
+   ========================================================= */
+
+INSERT INTO ESTADO_REPORTE (NOMBRE, DESCRIPCION)
+VALUES ('REGISTRADO', 'Reporte recibido y almacenado en el sistema');
+
+INSERT INTO ESTADO_REPORTE (NOMBRE, DESCRIPCION)
+VALUES ('EN REVISIÓN', 'Reporte en proceso de revisión');
+
+INSERT INTO ESTADO_REPORTE (NOMBRE, DESCRIPCION)
+VALUES ('APROBADO', 'Reporte revisado y aprobado');
+
+INSERT INTO ESTADO_REPORTE (NOMBRE, DESCRIPCION)
+VALUES ('RECHAZADO', 'Reporte rechazado por inconsistencias');
+
+INSERT INTO ESTADO_REPORTE (NOMBRE, DESCRIPCION)
+VALUES ('CERRADO', 'Reporte gestionado y finalizado');
 
 
 /* =========================================================
    TIPOS DE NOVEDAD
    ========================================================= */
 
--- Cambio de director técnico
--- Cambio de propietario
--- Cambio de razón social
--- Cambio de teléfono
--- Cambio de correo
--- Suspensión
--- Cierre temporal
--- Cierre definitivo
+INSERT INTO TIPO_NOVEDAD (NOMBRE)
+VALUES ('Cambio de director técnico o responsable del establecimiento');
 
-
-/* =========================================================
-   MUNICIPIOS
-   ========================================================= */
-
--- Municipios del departamento de Antioquia
-
-
-/* =========================================================
-   SERVICIOS
-   ========================================================= */
-
--- Servicios farmacéuticos
-
-
+INSERT INTO TIPO
