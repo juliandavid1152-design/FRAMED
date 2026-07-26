@@ -1,82 +1,22 @@
 /* =========================================================
    PROYECTO FRAMED
    Archivo: 06_vistas.sql
-   Descripción: Vistas del sistema
+   Descripción: Vistas de la base de datos
    Motor: Oracle Database
+
+   Estado:
+   La versión actual del proyecto FRAMED no implementa
+   vistas (VIEW) en Oracle Database.
+
+   Actualmente las consultas de información se realizan
+   directamente sobre las tablas del modelo de datos mediante
+   Oracle APEX y consultas SQL.
+
+   Este archivo se conserva para futuras versiones del sistema,
+   donde podrán implementarse vistas para simplificar consultas,
+   mejorar el rendimiento y facilitar la generación de reportes.
    ========================================================= */
 
-
-/* =========================================================
-   VISTA DE ESTABLECIMIENTOS
-   ========================================================= */
-
-CREATE OR REPLACE VIEW VW_ESTABLECIMIENTOS AS
-
-SELECT
-
-E.ID_ESTABLECIMIENTO,
-E.NOMBRE,
-E.NIT,
-E.DIRECCION,
-E.TELEFONO,
-E.EMAIL,
-M.NOMBRE MUNICIPIO,
-ES.NOMBRE ESTADO
-
-FROM ESTABLECIMIENTO E
-
-INNER JOIN MUNICIPIOS M
-ON E.MUNICIPIO=M.ID_MUNICIPIO
-
-INNER JOIN ESTADO ES
-ON E.ID_ESTADO=ES.ID_ESTADO;
-
-
-/* =========================================================
-   VISTA DE REPORTES
-   ========================================================= */
-
-CREATE OR REPLACE VIEW VW_REPORTES AS
-
-SELECT
-
-R.ID_REPORTE,
-R.RADICADO,
-E.NOMBRE ESTABLECIMIENTO,
-RP.NOMBRE REPORTANTE,
-ER.NOMBRE ESTADO,
-R.FECHA_REPORTE
-
-FROM REPORTES R
-
-INNER JOIN ESTABLECIMIENTO E
-ON R.ID_ESTABLECIMIENTO=E.ID_ESTABLECIMIENTO
-
-INNER JOIN REPORTANTE RP
-ON RP.ID_REPORTANTE=R.ID_REPORTANTE
-
-INNER JOIN ESTADO_REPORTE ER
-ON ER.ID_ESTADO_REPORTE=R.ID_ESTADO_REPORTE;
-
-
-/* =========================================================
-   VISTA DE NOVEDADES
-   ========================================================= */
-
-CREATE OR REPLACE VIEW VW_NOVEDADES AS
-
-SELECT
-
-N.ID_NOVEDAD,
-TN.NOMBRE TIPO_NOVEDAD,
-E.NOMBRE ESTABLECIMIENTO,
-N.FECHA_REPORTE,
-N.ESTADO
-
-FROM NOVEDADES N
-
-INNER JOIN ESTABLECIMIENTO E
-ON N.ID_ESTABLECIMIENTO=E.ID_ESTABLECIMIENTO
-
-INNER JOIN TIPO_NOVEDAD TN
-ON TN.ID_TIPO_NOVEDAD=N.ID_TIPO_NOVEDAD;
+-- =========================================================
+-- NO SE IMPLEMENTAN VISTAS EN LA VERSIÓN ACTUAL DEL SISTEMA
+-- =========================================================
