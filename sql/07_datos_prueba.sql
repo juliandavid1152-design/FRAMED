@@ -1,21 +1,27 @@
 /* =========================================================
    PROYECTO FRAMED
    Archivo: 07_datos_prueba.sql
-   Descripción: Datos para pruebas del sistema
-   Motor: Oracle Database
+   Descripción: Datos de prueba
    ========================================================= */
 
+INSERT INTO DT (NOMBRE,DOCUMENTO)
+VALUES ('JUAN PEREZ','12345678');
 
-/* =========================================================
-   DATOS DE PRUEBA
-   ========================================================= */
+INSERT INTO MUNICIPIOS (NOMBRE)
+VALUES ('MEDELLÍN');
 
--- Directores técnicos
+INSERT INTO REPORTANTE
+(
+NOMBRE,
+TIPO_DOCUMENTO,
+NUMERO_DOCUMENTO
+)
 
--- Establecimientos
+VALUES
+(
+'CARLOS GÓMEZ',
+'CC',
+'10203040'
+);
 
--- Reportantes
-
--- Reportes
-
--- Novedades
+COMMIT;
