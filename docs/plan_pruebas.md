@@ -1,104 +1,158 @@
-# Plan de Pruebas
+# Plan de Pruebas del Proyecto FRAMED
 
-## Objetivo
+## 1. Introducción
 
-Definir la estrategia de validación del sistema FRAMED para verificar que todas las funcionalidades desarrolladas cumplan los requerimientos establecidos.
+El presente plan de pruebas define las actividades necesarias para verificar el funcionamiento del sistema FRAMED y comprobar que sus componentes respondan a los requerimientos establecidos. La validación se concentra en los módulos de gestión de establecimientos, reportes, novedades, catálogos y trazabilidad de la información.
+
+Las pruebas se plantean como parte del proceso de desarrollo tecnológico y buscan identificar errores funcionales, inconsistencias en la base de datos, fallas de navegación y problemas de validación antes de la entrega del prototipo.
 
 ---
 
-# Tipos de pruebas
+# 2. Objetivo
 
-## 1. Pruebas Unitarias
+Verificar que las funcionalidades desarrolladas en FRAMED operen de manera correcta, mantengan la integridad de los datos y permitan ejecutar los procesos definidos para los módulos CENSO y REPO.
 
-Se realizarán pruebas sobre cada componente desarrollado de forma independiente, verificando el correcto funcionamiento de:
+---
 
-- Registro de establecimientos.
-- Registro de reportes.
+# 3. Alcance
+
+El plan comprende las siguientes áreas:
+
+- Registro y consulta de establecimientos.
+- Actualización de información.
+- Registro de reportantes.
+- Registro y seguimiento de reportes.
 - Registro de novedades.
+- Consulta del historial.
 - Administración de catálogos.
-- Consultas.
+- Validación de relaciones entre tablas.
+- Autenticación y control de acceso.
+- Navegación entre módulos.
 
 ---
 
-## 2. Pruebas de Integración
+# 4. Tipos de Prueba
 
-Se verificará la interacción entre los diferentes módulos del sistema.
+## 4.1 Pruebas funcionales
+
+Permiten comprobar que cada módulo realice las operaciones esperadas de acuerdo con los requerimientos funcionales.
+
+## 4.2 Pruebas de validación
+
+Verifican el comportamiento de los campos obligatorios, formatos de datos y restricciones definidas para evitar información incompleta o inconsistente.
+
+## 4.3 Pruebas de integración
+
+Evalúan la interacción entre los módulos y las relaciones existentes en la base de datos.
 
 Ejemplos:
 
-- Registro de establecimiento → Reporte.
-- Reporte → Novedad.
-- Establecimiento → Servicios.
-- Director Técnico → Establecimiento.
+- Establecimiento y municipio.
+- Establecimiento y servicios.
+- Reporte y reportante.
+- Reporte y estado.
+- Novedad y tipo de novedad.
+- Reporte e historial.
+
+## 4.4 Pruebas de integridad de datos
+
+Comprueban el funcionamiento de las claves primarias, claves foráneas, restricciones de unicidad y demás controles definidos en Oracle Database.
+
+## 4.5 Pruebas de navegación
+
+Verifican que los botones, menús, formularios y reportes conduzcan correctamente a las páginas correspondientes.
+
+## 4.6 Pruebas de seguridad
+
+Evalúan el acceso a la aplicación y la disponibilidad de funcionalidades según los permisos asignados.
+
+## 4.7 Pruebas de usabilidad
+
+Permiten identificar dificultades en la comprensión de los formularios, navegación, mensajes y organización de la información.
 
 ---
 
-## 3. Pruebas Funcionales
+# 5. Ambiente de Pruebas
 
-Se comprobará que el sistema responda de acuerdo con los requerimientos funcionales definidos.
+Las pruebas se ejecutarán en un entorno compuesto por:
 
-### Casos principales
-
-- Registrar establecimiento.
-- Editar establecimiento.
-- Consultar establecimiento.
-- Registrar reporte.
-- Registrar novedad.
-- Consultar historial.
-- Consultar catálogos.
+- Oracle APEX.
+- Oracle Database.
+- Navegador web actualizado.
+- Datos de prueba controlados.
+- Repositorio GitHub para la documentación de evidencias.
 
 ---
 
-## 4. Pruebas de Base de Datos
+# 6. Casos de Prueba
 
-Se validará:
-
-- Integridad referencial.
-- Restricciones.
-- Llaves primarias.
-- Llaves foráneas.
-- Triggers.
-- Procedimientos almacenados.
-- Vistas.
-
----
-
-## 5. Pruebas de Seguridad
-
-Se comprobará:
-
-- Inicio de sesión.
-- Restricciones de acceso.
-- Validación de permisos.
-- Protección de información.
+| ID | Módulo | Caso de prueba | Datos de entrada | Resultado esperado | Estado |
+|---|---|---|---|---|---|
+| CP-01 | Establecimientos | Registrar un establecimiento con datos válidos | Nombre, NIT, municipio, dirección y estado | El registro se almacena correctamente | Pendiente |
+| CP-02 | Establecimientos | Registrar sin nombre | Formulario sin nombre | El sistema muestra una validación y no guarda | Pendiente |
+| CP-03 | Establecimientos | Consultar registros | Criterio de búsqueda | El sistema muestra los establecimientos coincidentes | Pendiente |
+| CP-04 | Establecimientos | Actualizar información | Registro existente y nuevos datos | Los cambios quedan almacenados | Pendiente |
+| CP-05 | Establecimientos | Registrar NIT duplicado | NIT existente | El sistema impide la duplicidad | Pendiente |
+| CP-06 | Reportantes | Registrar reportante | Nombre, cargo, correo y teléfono | El reportante queda almacenado | Pendiente |
+| CP-07 | Reportes | Registrar reporte | Establecimiento, reportante y estado | El reporte queda asociado correctamente | Pendiente |
+| CP-08 | Reportes | Consultar por radicado | Número de radicado | El sistema muestra el reporte correspondiente | Pendiente |
+| CP-09 | Novedades | Registrar novedad | Reporte, establecimiento y tipo | La novedad queda asociada al reporte | Pendiente |
+| CP-10 | Novedades | Consultar tipo de novedad | Selección de catálogo | Se muestran los tipos registrados | Pendiente |
+| CP-11 | Historial | Registrar cambio de estado | Estado anterior, nuevo estado y usuario | El cambio queda almacenado en el historial | Pendiente |
+| CP-12 | Integridad | Eliminar un registro relacionado | Establecimiento con reportes asociados | La base de datos controla la integridad referencial | Pendiente |
+| CP-13 | Navegación | Abrir módulo desde el menú | Selección de opción | La página correspondiente se abre correctamente | Pendiente |
+| CP-14 | Seguridad | Acceder sin autenticación | URL de la aplicación | El sistema solicita inicio de sesión | Pendiente |
+| CP-15 | Catálogos | Consultar municipios | Acceso al catálogo | Se muestran los 125 municipios cargados | Pendiente |
 
 ---
 
-# Criterios de aceptación
+# 7. Criterios de Aceptación
 
-Se considerará exitosa una prueba cuando:
+Una prueba se considera aprobada cuando:
 
-- El resultado obtenido corresponda con el esperado.
-- No existan errores de integridad.
-- No se presenten pérdidas de información.
-- Los registros sean almacenados correctamente.
-
----
-
-# Registro de pruebas
-
-| ID | Caso de prueba | Resultado esperado | Estado |
-|----|----------------|-------------------|--------|
-| CP-01 | Registrar establecimiento | Registro exitoso | Pendiente |
-| CP-02 | Editar establecimiento | Actualización correcta | Pendiente |
-| CP-03 | Registrar reporte | Información almacenada | Pendiente |
-| CP-04 | Registrar novedad | Novedad registrada | Pendiente |
-| CP-05 | Consultar historial | Información visible | Pendiente |
-| CP-06 | Consultar catálogos | Datos disponibles | Pendiente |
-| CP-07 | Validar restricciones | No permite datos inválidos | Pendiente |
+- El resultado obtenido coincide con el esperado.
+- No se presentan errores de ejecución.
+- La información se almacena correctamente.
+- Las relaciones entre tablas se mantienen.
+- El sistema muestra mensajes comprensibles.
+- La navegación funciona de acuerdo con el flujo definido.
 
 ---
 
-# Resultado esperado
+# 8. Registro de Incidencias
 
-Al finalizar las pruebas el sistema deberá cumplir la totalidad de los requerimientos funcionales y no funcionales definidos para el proyecto FRAMED.
+Las fallas identificadas deberán documentarse con:
+
+- Código de la incidencia.
+- Fecha.
+- Módulo afectado.
+- Descripción del error.
+- Pasos para reproducirlo.
+- Evidencia.
+- Nivel de prioridad.
+- Estado de solución.
+
+---
+
+# 9. Evidencias
+
+Las evidencias podrán incluir:
+
+- Capturas de pantalla.
+- Consultas SQL.
+- Mensajes de confirmación o error.
+- Registros creados.
+- Resultados de navegación.
+- Video de funcionamiento del prototipo.
+
+---
+
+# 10. Resultado Esperado
+
+Al finalizar las pruebas, el prototipo deberá demostrar el funcionamiento integrado de la base de datos y de los módulos principales definidos para FRAMED, con especial énfasis en el registro de establecimientos, la gestión de reportes, el manejo de novedades y la trazabilidad de los cambios.
+
+---
+
+# 11. Conclusiones
+
+El plan de pruebas permite evaluar de forma ordenada el comportamiento del sistema y relacionar las funcionalidades implementadas con los requerimientos del proyecto. Su aplicación facilita la identificación de errores, fortalece la calidad del prototipo y aporta evidencias para sustentar el nivel de desarrollo alcanzado.
