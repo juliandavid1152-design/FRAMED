@@ -6,8 +6,6 @@
    Motor: Oracle Database
 
    Importante:
-   - Los datos de este archivo son ficticios y se utilizan
-     únicamente con fines de prueba y demostración.
    - Debe ejecutarse después de:
        01_creacion_tablas.sql
        02_constraints.sql
