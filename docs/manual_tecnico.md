@@ -1,28 +1,79 @@
 # Manual Técnico
 
-## Tecnologías
+## Proyecto
 
-- Oracle APEX
-- Oracle Database
-- SQL
+FRAMED
+Fortalecimiento de la Regulación, Administración y Monitoreo de Establecimientos Farmacéuticos
+
+---
+
+# Descripción
+
+FRAMED es un sistema web desarrollado para apoyar la gestión de establecimientos farmacéuticos del departamento de Antioquia, permitiendo centralizar la información, administrar reportes y mantener la trazabilidad de las novedades registradas.
+
+---
+
+# Tecnologías utilizadas
+
+## Backend
+
+- Oracle Database 23ai
 - PL/SQL
+
+## Frontend
+
+- Oracle APEX 24
+
+## Base de datos
+
+- Oracle SQL
+
+## Control de versiones
+
+- Git
 - GitHub
 
 ---
 
-## Estructura del proyecto
+# Arquitectura
 
-- docs/
-- sql/
+El sistema está compuesto por tres capas principales.
+
+## Presentación
+
+Interfaces desarrolladas en Oracle APEX.
+
+Funciones:
+
+- Formularios
+- Reportes
+- Consultas
+- Dashboards
 
 ---
 
-## Base de datos
+## Lógica de negocio
 
-La base de datos utiliza restricciones de integridad, claves primarias, claves foráneas, vistas, procedimientos almacenados y triggers.
+Implementada mediante:
+
+- Procedimientos almacenados
+- Triggers
+- Validaciones
+- Restricciones
 
 ---
 
-## Control de versiones
+## Persistencia
 
-El código fuente es administrado mediante GitHub.
+Oracle Database almacena:
+
+- Catálogos
+- Establecimientos
+- Reportes
+- Novedades
+- Historial
+- Usuarios
+
+---
+
+# Estructura del proyecto
