@@ -7,20 +7,61 @@
 
 
 /* =========================================================
-   TRIGGERS DE AUDITORÍA
+   TRIGGER 1
+   ACTUALIZAR FECHA DE MODIFICACIÓN DEL ESTABLECIMIENTO
    ========================================================= */
 
--- Fecha de creación
-
--- Fecha de modificación
-
--- Usuario que modifica
-
+CREATE OR REPLACE TRIGGER TRG_ESTABLECIMIENTO_UPDATE
+BEFORE UPDATE ON ESTABLECIMIENTO
+FOR EACH ROW
+BEGIN
+    :NEW.FECHA_REGISTRO := SYSDATE;
+END;
+/
 
 /* =========================================================
-   TRIGGERS DE NEGOCIO
+   TRIGGER 2
+   FECHA AUTOMÁTICA DE REPORTE
    ========================================================= */
 
--- Generación automática de códigos
+CREATE OR REPLACE TRIGGER TRG_REPORTE_FECHA
+BEFORE INSERT ON REPORTES
+FOR EACH ROW
+BEGIN
+    IF :NEW.FECHA_REPORTE IS NULL THEN
+        :NEW.FECHA_REPORTE := SYSDATE;
+    END IF;
+END;
+/
 
--- Validaciones automáticas
+/* =========================================================
+   TRIGGER 3
+   FECHA AUTOMÁTICA DE NOVEDAD
+   ========================================================= */
+
+CREATE OR REPLACE TRIGGER TRG_NOVEDAD_FECHA
+BEFORE INSERT ON NOVEDADES
+FOR EACH ROW
+BEGIN
+    IF :NEW.FECHA_REPORTE IS NULL THEN
+        :NEW.FECHA_REPORTE := SYSDATE;
+    END IF;
+END;
+/
+
+/* =========================================================
+   TRIGGER 4
+   VALIDAR NOMBRE DEL ESTABLECIMIENTO
+   ========================================================= */
+
+CREATE OR REPLACE TRIGGER TRG_ESTABLECIMIENTO_NOMBRE
+BEFORE INSERT OR UPDATE ON ESTABLECIMIENTO
+FOR EACH ROW
+BEGIN
+    :NEW.NOMBRE := UPPER(TRIM(:NEW.NOMBRE));
+END;
+/
+
+/* =========================================================
+   FIN DEL SCRIPT
+   ========================================================= */
