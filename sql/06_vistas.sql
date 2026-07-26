@@ -1,22 +1,82 @@
 /* =========================================================
    PROYECTO FRAMED
    Archivo: 06_vistas.sql
-   Descripción: Vistas para consultas del sistema
+   Descripción: Vistas del sistema
    Motor: Oracle Database
    ========================================================= */
 
 
 /* =========================================================
-   VISTAS
+   VISTA DE ESTABLECIMIENTOS
    ========================================================= */
 
--- Vista de establecimientos
+CREATE OR REPLACE VIEW VW_ESTABLECIMIENTOS AS
 
--- Vista de reportes
+SELECT
 
--- Vista de novedades
+E.ID_ESTABLECIMIENTO,
+E.NOMBRE,
+E.NIT,
+E.DIRECCION,
+E.TELEFONO,
+E.EMAIL,
+M.NOMBRE MUNICIPIO,
+ES.NOMBRE ESTADO
 
--- Vista de historial
+FROM ESTABLECIMIENTO E
 
--- Vista de indicadores
+INNER JOIN MUNICIPIOS M
+ON E.MUNICIPIO=M.ID_MUNICIPIO
 
+INNER JOIN ESTADO ES
+ON E.ID_ESTADO=ES.ID_ESTADO;
+
+
+/* =========================================================
+   VISTA DE REPORTES
+   ========================================================= */
+
+CREATE OR REPLACE VIEW VW_REPORTES AS
+
+SELECT
+
+R.ID_REPORTE,
+R.RADICADO,
+E.NOMBRE ESTABLECIMIENTO,
+RP.NOMBRE REPORTANTE,
+ER.NOMBRE ESTADO,
+R.FECHA_REPORTE
+
+FROM REPORTES R
+
+INNER JOIN ESTABLECIMIENTO E
+ON R.ID_ESTABLECIMIENTO=E.ID_ESTABLECIMIENTO
+
+INNER JOIN REPORTANTE RP
+ON RP.ID_REPORTANTE=R.ID_REPORTANTE
+
+INNER JOIN ESTADO_REPORTE ER
+ON ER.ID_ESTADO_REPORTE=R.ID_ESTADO_REPORTE;
+
+
+/* =========================================================
+   VISTA DE NOVEDADES
+   ========================================================= */
+
+CREATE OR REPLACE VIEW VW_NOVEDADES AS
+
+SELECT
+
+N.ID_NOVEDAD,
+TN.NOMBRE TIPO_NOVEDAD,
+E.NOMBRE ESTABLECIMIENTO,
+N.FECHA_REPORTE,
+N.ESTADO
+
+FROM NOVEDADES N
+
+INNER JOIN ESTABLECIMIENTO E
+ON N.ID_ESTABLECIMIENTO=E.ID_ESTABLECIMIENTO
+
+INNER JOIN TIPO_NOVEDAD TN
+ON TN.ID_TIPO_NOVEDAD=N.ID_TIPO_NOVEDAD;
