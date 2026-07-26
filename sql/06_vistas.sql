@@ -1,22 +1,214 @@
 /* =========================================================
    PROYECTO FRAMED
    Archivo: 06_vistas.sql
-   Descripción: Vistas de la base de datos
+   Descripción: Vistas para consultas, reportes e indicadores
+                del modelo definitivo de FRAMED
    Motor: Oracle Database
 
-   Estado:
-   La versión actual del proyecto FRAMED no implementa
-   vistas (VIEW) en Oracle Database.
-
-   Actualmente las consultas de información se realizan
-   directamente sobre las tablas del modelo de datos mediante
-   Oracle APEX y consultas SQL.
-
-   Este archivo se conserva para futuras versiones del sistema,
-   donde podrán implementarse vistas para simplificar consultas,
-   mejorar el rendimiento y facilitar la generación de reportes.
+   Nota:
+   Estas vistas constituyen una ampliación técnica del modelo
+   base y deben probarse en el esquema Oracle antes de su uso
+   definitivo desde Oracle APEX.
    ========================================================= */
 
--- =========================================================
--- NO SE IMPLEMENTAN VISTAS EN LA VERSIÓN ACTUAL DEL SISTEMA
--- =========================================================
+
+/* =========================================================
+   1. VISTA GENERAL DE ESTABLECIMIENTOS
+   ========================================================= */
+
+CREATE OR REPLACE VIEW VW_ESTABLECIMIENTOS_COMPLETOS AS
+SELECT
+    E.CODIGO_ESTABLECIMIENTO,
+    E.RAZON_SOCIAL,
+    E.NIT,
+    E.DIRECCION,
+    E.BARRIO,
+    E.TELEFONOS,
+    E.EMAIL,
+    E.ID_DT,
+    E.NOMBRE_DIRECTOR_TECNICO,
+    TDT.NOMBRE AS TITULO_DIRECTOR_TECNICO,
+    E.ID_PROPIETARIO,
+    E.NOMBRE_PROPIETARIO,
+    E.ID_RL,
+    E.NOMBRE_REPRESENTANTE,
+    E.MATRICULA_MERCANTIL,
+    GE.NOMBRE AS GRUPO_ESTABLECIMIENTO,
+    TE.NOMBRE AS TIPO_ESTABLECIMIENTO,
+    R.NOMBRE AS REGION,
+    M.NOMBRE AS MUNICIPIO,
+    EE.NOMBRE AS ESTADO_ESTABLECIMIENTO,
+    CS.NOMBRE AS CONCEPTO_SANITARIO,
+    E.INYECTOLOGIA,
+    E.MCE,
+    E.EAPB,
+    E.VENTAS_A_DISTANCIA,
+    E.TOMA_GLICEMIA,
+    E.MAGISTRALES,
+    E.FECHA_CREACION,
+    E.USUARIO_CREACION,
+    E.FECHA_ULTIMA_ACTUALIZACION,
+    E.USUARIO_ULTIMA_ACTUALIZACION,
+    E.ID_ULTIMA_NOVEDAD,
+    E.OBSERVACIONES
+FROM ESTABLECIMIENTOS E
+LEFT JOIN GRUPOS_ESTABLECIMIENTO GE
+       ON GE.CODIGO_GRUPO = E.CODIGO_GRUPO
+LEFT JOIN TIPO_ESTABLECIMIENTO TE
+       ON TE.CODIGO_TIPO_ESTABLECIMIENTO =
+          E.CODIGO_TIPO_ESTABLECIMIENTO
+LEFT JOIN REGIONES R
+       ON R.CODIGO_REGION = E.CODIGO_REGION
+LEFT JOIN MUNICIPIOS M
+       ON M.CODIGO_MUNICIPIO = E.CODIGO_MUNICIPIO
+LEFT JOIN TITULOS_DIRECTOR_TECNICO TDT
+       ON TDT.CODIGO_TITULO = E.CODIGO_TITULO
+LEFT JOIN ESTADOS_ESTABLECIMIENTO EE
+       ON EE.CODIGO_ESTADO = E.CODIGO_ESTADO
+LEFT JOIN CONCEPTOS_SANITARIOS CS
+       ON CS.CODIGO_CONCEPTO_SANITARIO =
+          E.CODIGO_CONCEPTO_SANITARIO;
+
+
+/* =========================================================
+   2. VISTA GENERAL DE REPORTES
+   ========================================================= */
+
+CREATE OR REPLACE VIEW VW_REPORTES_COMPLETOS AS
+SELECT
+    RP.ID_REPORTE,
+    RP.CODIGO_ESTABLECIMIENTO,
+    E.RAZON_SOCIAL,
+    E.NIT,
+    TN.CODIGO AS CODIGO_TIPO_NOVEDAD,
+    TN.TIPO_NOVEDAD,
+    ER.NOMBRE_ESTADO AS ESTADO_REPORTE,
+    TR.NOMBRE AS TIPO_REPORTANTE,
+    RP.NOMBRE_REPORTANTE,
+    RP.DOCUMENTO_REPORTANTE,
+    RP.FECHA_REPORTE,
+    RP.FECHA_NOTIFICACION,
+    RP.OBSERVACIONES
+FROM REPORTES RP
+INNER JOIN ESTABLECIMIENTOS E
+        ON E.CODIGO_ESTABLECIMIENTO =
+           RP.CODIGO_ESTABLECIMIENTO
+INNER JOIN TIPOS_NOVEDAD TN
+        ON TN.ID_TIPO_NOVEDAD = RP.ID_TIPO_NOVEDAD
+INNER JOIN ESTADOS_REPORTE ER
+        ON ER.ID_ESTADO_REPORTE = RP.ID_ESTADO_REPORTE
+INNER JOIN TIPOS_REPORTANTE TR
+        ON TR.CODIGO_TIPO_REPORTANTE =
+           RP.CODIGO_TIPO_REPORTANTE;
+
+
+/* =========================================================
+   3. VISTA DE DETALLES DE NOVEDADES REPORTADAS
+   ========================================================= */
+
+CREATE OR REPLACE VIEW VW_DETALLE_NOVEDADES AS
+SELECT
+    DR.ID_DETALLE_REPORTE,
+    DR.ID_REPORTE,
+    RP.CODIGO_ESTABLECIMIENTO,
+    E.RAZON_SOCIAL,
+    TN.TIPO_NOVEDAD,
+    CN.ETIQUETA AS CAMPO_NOVEDAD,
+    CN.TIPO_DATO,
+    TNC.OBLIGATORIO,
+    TNC.ACTUALIZA_CENSO,
+    TNC.ORDEN,
+    DR.VALOR
+FROM DETALLE_REPORTE DR
+INNER JOIN REPORTES RP
+        ON RP.ID_REPORTE = DR.ID_REPORTE
+INNER JOIN ESTABLECIMIENTOS E
+        ON E.CODIGO_ESTABLECIMIENTO =
+           RP.CODIGO_ESTABLECIMIENTO
+INNER JOIN TIPO_NOVEDAD_CAMPOS TNC
+        ON TNC.ID_TIPO_NOVEDAD_CAMPO =
+           DR.ID_TIPO_NOVEDAD_CAMPO
+INNER JOIN TIPOS_NOVEDAD TN
+        ON TN.ID_TIPO_NOVEDAD =
+           TNC.ID_TIPO_NOVEDAD
+INNER JOIN CAMPOS_NOVEDAD CN
+        ON CN.ID_CAMPO = TNC.ID_CAMPO;
+
+
+/* =========================================================
+   4. VISTA DE HISTORIAL DE ACTUALIZACIONES
+   ========================================================= */
+
+CREATE OR REPLACE VIEW VW_HISTORIAL_ACTUALIZACIONES AS
+SELECT
+    HA.ID_HISTORIAL,
+    HA.ID_REPORTE,
+    HA.CODIGO_ESTABLECIMIENTO,
+    E.RAZON_SOCIAL,
+    CN.ETIQUETA AS CAMPO_MODIFICADO,
+    CN.TIPO_DATO,
+    HA.VALOR_ANTERIOR,
+    HA.VALOR_NUEVO,
+    HA.FECHA_ACTUALIZACION
+FROM HISTORIAL_ACTUALIZACIONES HA
+INNER JOIN ESTABLECIMIENTOS E
+        ON E.CODIGO_ESTABLECIMIENTO =
+           HA.CODIGO_ESTABLECIMIENTO
+INNER JOIN CAMPOS_NOVEDAD CN
+        ON CN.ID_CAMPO = HA.ID_CAMPO;
+
+
+/* =========================================================
+   5. VISTA DE INDICADORES GENERALES
+   ========================================================= */
+
+CREATE OR REPLACE VIEW VW_INDICADORES_GENERALES AS
+SELECT
+    (SELECT COUNT(*)
+       FROM ESTABLECIMIENTOS) AS TOTAL_ESTABLECIMIENTOS,
+
+    (SELECT COUNT(*)
+       FROM ESTABLECIMIENTOS
+      WHERE CODIGO_ESTADO = 1) AS ESTABLECIMIENTOS_ACTIVOS,
+
+    (SELECT COUNT(*)
+       FROM ESTABLECIMIENTOS
+      WHERE CODIGO_ESTADO = 2) AS ESTABLECIMIENTOS_INACTIVOS,
+
+    (SELECT COUNT(*)
+       FROM REPORTES) AS TOTAL_REPORTES,
+
+    (SELECT COUNT(*)
+       FROM REPORTES
+      WHERE ID_ESTADO_REPORTE = 1) AS REPORTES_RADICADOS,
+
+    (SELECT COUNT(*)
+       FROM REPORTES
+      WHERE ID_ESTADO_REPORTE = 2) AS REPORTES_APLICADOS_CENSO,
+
+    (SELECT COUNT(*)
+       FROM REPORTES
+      WHERE ID_ESTADO_REPORTE = 3) AS REPORTES_NOTIFICADOS
+FROM DUAL;
+
+
+/* =========================================================
+   6. VISTA DE ESTABLECIMIENTOS POR MUNICIPIO
+   ========================================================= */
+
+CREATE OR REPLACE VIEW VW_ESTABLECIMIENTOS_POR_MUNICIPIO AS
+SELECT
+    M.CODIGO_MUNICIPIO,
+    M.NOMBRE AS MUNICIPIO,
+    COUNT(E.CODIGO_ESTABLECIMIENTO) AS TOTAL_ESTABLECIMIENTOS
+FROM MUNICIPIOS M
+LEFT JOIN ESTABLECIMIENTOS E
+       ON E.CODIGO_MUNICIPIO = M.CODIGO_MUNICIPIO
+GROUP BY
+    M.CODIGO_MUNICIPIO,
+    M.NOMBRE;
+
+
+/* =========================================================
+   FIN DEL SCRIPT DE VISTAS
+   ========================================================= */
