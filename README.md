@@ -1,128 +1,49 @@
-# FRAMED
-## Ecosistema Digital para la Gestión y Trazabilidad de Establecimientos Farmacéuticos de Antioquia
+# Scripts SQL - FRAMED
 
-![Estado](https://img.shields.io/badge/Estado-En%20Desarrollo-blue)
-![Oracle APEX](https://img.shields.io/badge/Oracle-APEX-red)
-![Oracle Database](https://img.shields.io/badge/Oracle-Database-F80000)
-![UNAD](https://img.shields.io/badge/Proyecto-UNAD-green)
+## Descripción
 
----
+La carpeta **sql/** contiene los scripts necesarios para crear y configurar la base de datos del proyecto **FRAMED (Fortalecimiento de la Regulación, Administración y Monitoreo de Establecimientos Farmacéuticos)**.
 
-# Descripción
-
-FRAMED (Fortalecimiento de la Regulación, Administración y Monitoreo de Establecimientos) es un ecosistema digital diseñado para apoyar la gestión de la información de los establecimientos farmacéuticos del departamento de Antioquia.
-
-El proyecto busca centralizar la información, mejorar la trazabilidad de los procesos, optimizar el registro de novedades y facilitar la toma de decisiones mediante una plataforma desarrollada sobre Oracle APEX y Oracle Database.
+Los archivos están organizados en el orden en que deben ejecutarse para garantizar la correcta creación de la estructura de la base de datos, las relaciones entre tablas, los datos iniciales y los componentes de apoyo.
 
 ---
 
-# Objetivo General
+# Estructura de los Scripts
 
-Diseñar e implementar un sistema de información que permita administrar el censo de establecimientos farmacéuticos y gestionar las novedades reportadas por los establecimientos del departamento de Antioquia.
-
----
-
-# Objetivos Específicos
-
-- Centralizar la información de los establecimientos farmacéuticos.
-- Gestionar el registro y actualización de novedades.
-- Optimizar los procesos de consulta y seguimiento.
-- Mejorar la trazabilidad de la información.
-- Disponer de reportes para apoyar la toma de decisiones.
-
----
-
-# Tecnologías Utilizadas
-
-- Oracle APEX
-- Oracle Database 23ai
-- SQL
-- PL/SQL
-- Git
-- GitHub
+| Archivo | Descripción |
+|----------|-------------|
+| 01_creacion_tablas.sql | Crea las tablas principales del sistema. |
+| 02_constraints.sql | Implementa las claves primarias, claves foráneas y restricciones de integridad. |
+| 03_catalogos.sql | Inserta la información inicial de los catálogos del sistema. |
+| 04_triggers.sql | Implementa los triggers para automatizar procesos y validaciones. |
+| 05_procedimientos.sql | Contiene los procedimientos almacenados utilizados por la aplicación. |
+| 06_vistas.sql | Crea las vistas utilizadas para consultas y reportes. |
+| 07_datos_prueba.sql | Inserta registros de prueba para validar el funcionamiento del sistema. |
+| 08_seguridad.sql | Configura los roles y permisos de acceso a la base de datos. |
 
 ---
 
-# Módulos del Sistema
+# Orden de Ejecución
 
-Actualmente el proyecto contempla los siguientes módulos:
+Los scripts deben ejecutarse en el siguiente orden:
 
-- Dashboard
-- Gestión de Establecimientos
-- Gestión de Servicios
-- Gestión de Reportantes
-- Gestión de Novedades
-- Registro de Reportes
-- Seguimiento de Reportes
-- Administración de Catálogos
-- Consultas
-- Reportes
+1. 01_creacion_tablas.sql
+2. 02_constraints.sql
+3. 03_catalogos.sql
+4. 04_triggers.sql
+5. 05_procedimientos.sql
+6. 06_vistas.sql
+7. 07_datos_prueba.sql
+8. 08_seguridad.sql
 
 ---
 
-# Modelo de Base de Datos
+# Objetivo
 
-Las principales entidades desarrolladas son:
-
-- ESTABLECIMIENTO
-- SERVICIOS
-- ESTABLECIMIENTO_SERVICIO
-- REPORTANTE
-- REPORTES
-- NOVEDADES
-- TIPO_NOVEDAD
-- MUNICIPIOS
-- ESTADO
-- ESTADO_REPORTE
-- DT
+La estructura de esta carpeta facilita la creación y configuración de la base de datos del proyecto, permitiendo que el proceso de instalación sea organizado, reproducible y sencillo de mantener.
 
 ---
 
-# Estructura del Repositorio
+# Observaciones
 
-```
-FRAMED
-│
-├── docs
-│   └── Documentación técnica
-│
-├── sql
-│   └── Scripts de base de datos
-│
-└── README.md
-```
-
----
-
-# Estado del Proyecto
-
-Actualmente el proyecto se encuentra en fase de desarrollo.
-
-Se está construyendo progresivamente la base de datos, la aplicación Oracle APEX y la documentación técnica correspondiente.
-
----
-
-# Integrantes
-
-- Claudia Marcela Muñoz Marín
-- Julián David Castrillón Martínez
-
----
-
-# Institución
-
-Universidad Nacional Abierta y a Distancia (UNAD)
-
-Escuela de Ciencias Básicas, Tecnología e Ingeniería
-
-Proyecto de Grado
-
-2026
-
----
-
-# Licencia
-
-Proyecto desarrollado con fines académicos.
-
-Todos los derechos pertenecen a sus autores.
+Los scripts fueron desarrollados para Oracle Database y hacen parte de la documentación técnica del proyecto FRAMED. Cualquier modificación a la estructura de la base de datos deberá reflejarse tanto en estos archivos como en la documentación asociada.
