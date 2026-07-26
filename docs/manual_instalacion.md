@@ -1,29 +1,34 @@
 # Manual de Instalación
 
-## Proyecto
+## 1. Introducción
 
-FRAMED
-
----
-
-## Requisitos
-
-- Oracle Database
-- Oracle APEX
-- Navegador Web
-- Cuenta de GitHub
+Este documento describe el procedimiento para instalar y configurar el proyecto FRAMED en un entorno Oracle.
 
 ---
 
-## Instalación
+# 2. Requisitos de Software
 
-### Paso 1
+Para la instalación del sistema se requiere:
 
-Clonar el repositorio.
+- Oracle Database 23ai o superior.
+- Oracle APEX 24 o superior.
+- Navegador web compatible.
+- Git.
+- GitHub.
 
-### Paso 2
+---
 
-Ejecutar los scripts SQL en el siguiente orden:
+# 3. Clonar el Repositorio
+
+```bash
+git clone https://github.com/USUARIO/FRAMED.git
+```
+
+---
+
+# 4. Crear la Base de Datos
+
+Ejecutar los scripts contenidos en la carpeta **sql** respetando el siguiente orden:
 
 1. 01_creacion_tablas.sql
 2. 02_constraints.sql
@@ -36,24 +41,31 @@ Ejecutar los scripts SQL en el siguiente orden:
 
 ---
 
-### Paso 3
+# 5. Importar Oracle APEX
 
-Importar la aplicación Oracle APEX.
-
----
-
-### Paso 4
-
-Verificar la conexión con la base de datos.
+Importar el archivo exportado de la aplicación mediante el asistente de Oracle APEX.
 
 ---
 
-### Paso 5
+# 6. Verificación
 
-Iniciar sesión y validar el funcionamiento del sistema.
+Comprobar:
+
+- Creación correcta de tablas.
+- Restricciones.
+- Procedimientos.
+- Triggers.
+- Vistas.
+- Datos iniciales.
 
 ---
 
-## Resultado esperado
+# 7. Puesta en Marcha
 
-El sistema deberá permitir el acceso al Dashboard y a todos los módulos disponibles.
+Acceder mediante navegador web e iniciar sesión con un usuario autorizado.
+
+---
+
+# 8. Mantenimiento
+
+Se recomienda realizar respaldos periódicos de la base de datos y mantener actualizado el repositorio GitHub con cada nueva versión del proyecto.
