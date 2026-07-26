@@ -1,54 +1,104 @@
-# Plan de Pruebas del Proyecto FRAMED
+# Plan de Pruebas
 
-## 1. Objetivo
+## Objetivo
 
-Definir las pruebas necesarias para verificar el funcionamiento de los componentes principales de FRAMED, especialmente los procesos relacionados con establecimientos farmacéuticos, reportes, novedades y catálogos del sistema.
+Definir la estrategia de validación del sistema FRAMED para verificar que todas las funcionalidades desarrolladas cumplan los requerimientos establecidos.
 
-## 2. Alcance
+---
 
-El plan contempla pruebas funcionales, de validación, integridad de datos, navegación, seguridad y usabilidad.
+# Tipos de pruebas
 
-## 3. Tipos de prueba
+## 1. Pruebas Unitarias
 
-### 3.1 Pruebas funcionales
+Se realizarán pruebas sobre cada componente desarrollado de forma independiente, verificando el correcto funcionamiento de:
 
-Se verificará que cada módulo cumpla con las funciones definidas en los requerimientos.
+- Registro de establecimientos.
+- Registro de reportes.
+- Registro de novedades.
+- Administración de catálogos.
+- Consultas.
 
-### 3.2 Pruebas de validación
+---
 
-Se comprobará el comportamiento de los campos obligatorios, formatos de datos y restricciones de negocio.
+## 2. Pruebas de Integración
 
-### 3.3 Pruebas de integridad
+Se verificará la interacción entre los diferentes módulos del sistema.
 
-Se validará que las relaciones entre tablas mantengan consistencia y que no existan registros huérfanos.
+Ejemplos:
 
-### 3.4 Pruebas de navegación
+- Registro de establecimiento → Reporte.
+- Reporte → Novedad.
+- Establecimiento → Servicios.
+- Director Técnico → Establecimiento.
 
-Se verificará que los botones, menús, formularios y reportes conduzcan correctamente a las páginas correspondientes.
+---
 
-### 3.5 Pruebas de seguridad
+## 3. Pruebas Funcionales
 
-Se comprobará que los usuarios solo accedan a las funciones autorizadas según su perfil.
+Se comprobará que el sistema responda de acuerdo con los requerimientos funcionales definidos.
 
-## 4. Casos de prueba
+### Casos principales
 
-| ID | Módulo | Prueba | Resultado esperado |
-|---|---|---|---|
-| CP-01 | Establecimientos | Registrar un establecimiento con datos válidos | El registro se almacena correctamente |
-| CP-02 | Establecimientos | Intentar registrar sin nombre | El sistema muestra una validación |
-| CP-03 | Establecimientos | Consultar establecimientos | Se muestran los registros disponibles |
-| CP-04 | Establecimientos | Editar un registro existente | Los cambios quedan almacenados |
-| CP-05 | Reportes | Registrar un reporte | El reporte queda asociado al establecimiento |
-| CP-06 | Novedades | Registrar una novedad | La novedad queda asociada al reporte |
-| CP-07 | Catálogos | Consultar tipos de novedad | Se muestran los valores configurados |
-| CP-08 | Seguridad | Acceder sin autenticación | El sistema solicita inicio de sesión |
-| CP-09 | Integridad | Eliminar un registro relacionado | El sistema controla la integridad referencial |
-| CP-10 | Navegación | Utilizar el menú principal | Las páginas se abren correctamente |
+- Registrar establecimiento.
+- Editar establecimiento.
+- Consultar establecimiento.
+- Registrar reporte.
+- Registrar novedad.
+- Consultar historial.
+- Consultar catálogos.
 
-## 5. Criterios de aceptación
+---
 
-Una prueba será aprobada cuando el resultado obtenido coincida con el resultado esperado y no se presenten errores técnicos ni inconsistencias de información.
+## 4. Pruebas de Base de Datos
 
-## 6. Registro de resultados
+Se validará:
 
-Los resultados deberán documentarse mediante capturas de pantalla, descripción de incidencias y estado final de cada caso de prueba.
+- Integridad referencial.
+- Restricciones.
+- Llaves primarias.
+- Llaves foráneas.
+- Triggers.
+- Procedimientos almacenados.
+- Vistas.
+
+---
+
+## 5. Pruebas de Seguridad
+
+Se comprobará:
+
+- Inicio de sesión.
+- Restricciones de acceso.
+- Validación de permisos.
+- Protección de información.
+
+---
+
+# Criterios de aceptación
+
+Se considerará exitosa una prueba cuando:
+
+- El resultado obtenido corresponda con el esperado.
+- No existan errores de integridad.
+- No se presenten pérdidas de información.
+- Los registros sean almacenados correctamente.
+
+---
+
+# Registro de pruebas
+
+| ID | Caso de prueba | Resultado esperado | Estado |
+|----|----------------|-------------------|--------|
+| CP-01 | Registrar establecimiento | Registro exitoso | Pendiente |
+| CP-02 | Editar establecimiento | Actualización correcta | Pendiente |
+| CP-03 | Registrar reporte | Información almacenada | Pendiente |
+| CP-04 | Registrar novedad | Novedad registrada | Pendiente |
+| CP-05 | Consultar historial | Información visible | Pendiente |
+| CP-06 | Consultar catálogos | Datos disponibles | Pendiente |
+| CP-07 | Validar restricciones | No permite datos inválidos | Pendiente |
+
+---
+
+# Resultado esperado
+
+Al finalizar las pruebas el sistema deberá cumplir la totalidad de los requerimientos funcionales y no funcionales definidos para el proyecto FRAMED.
