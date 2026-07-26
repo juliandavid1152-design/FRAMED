@@ -1,24 +1,227 @@
 /* =========================================================
    PROYECTO FRAMED
    Archivo: 05_procedimientos.sql
-   Descripción: Procedimientos almacenados del sistema
+   Descripción: Procedimientos almacenados para operaciones
+                principales del modelo definitivo de FRAMED
    Motor: Oracle Database
 
-   Estado:
-   La versión actual del proyecto FRAMED no implementa
-   procedimientos almacenados, funciones ni paquetes PL/SQL.
-
-   La lógica de negocio se desarrolla mediante:
-   - Oracle APEX.
-   - Restricciones de la base de datos.
-   - Consultas SQL y procesos propios de la aplicación.
-
-   Este archivo se conserva para futuras versiones del sistema,
-   donde podrán incorporarse procedimientos para automatizar
-   procesos y optimizar el rendimiento.
+   Nota:
+   Estos procedimientos constituyen una ampliación técnica del
+   modelo base. Deben probarse en el esquema Oracle antes de su
+   uso definitivo en producción.
    ========================================================= */
 
--- =========================================================
--- NO SE IMPLEMENTAN PROCEDIMIENTOS ALMACENADOS EN LA VERSIÓN
--- ACTUAL DEL SISTEMA
--- =========================================================
+
+/* =========================================================
+   1. REGISTRAR ESTABLECIMIENTO
+   ========================================================= */
+
+CREATE OR REPLACE PROCEDURE SP_REGISTRAR_ESTABLECIMIENTO (
+    P_CODIGO_ESTABLECIMIENTO IN ESTABLECIMIENTOS.CODIGO_ESTABLECIMIENTO%TYPE,
+    P_CODIGO_GRUPO           IN ESTABLECIMIENTOS.CODIGO_GRUPO%TYPE,
+    P_CODIGO_TIPO            IN ESTABLECIMIENTOS.CODIGO_TIPO_ESTABLECIMIENTO%TYPE,
+    P_CODIGO_REGION          IN ESTABLECIMIENTOS.CODIGO_REGION%TYPE,
+    P_CODIGO_MUNICIPIO       IN ESTABLECIMIENTOS.CODIGO_MUNICIPIO%TYPE,
+    P_RAZON_SOCIAL           IN ESTABLECIMIENTOS.RAZON_SOCIAL%TYPE,
+    P_DIRECCION              IN ESTABLECIMIENTOS.DIRECCION%TYPE DEFAULT NULL,
+    P_BARRIO                 IN ESTABLECIMIENTOS.BARRIO%TYPE DEFAULT NULL,
+    P_TELEFONOS              IN ESTABLECIMIENTOS.TELEFONOS%TYPE DEFAULT NULL,
+    P_NIT                    IN ESTABLECIMIENTOS.NIT%TYPE DEFAULT NULL,
+    P_EMAIL                  IN ESTABLECIMIENTOS.EMAIL%TYPE DEFAULT NULL,
+    P_CODIGO_ESTADO          IN ESTABLECIMIENTOS.CODIGO_ESTADO%TYPE DEFAULT 1
+)
+IS
+BEGIN
+    INSERT INTO ESTABLECIMIENTOS (
+        CODIGO_ESTABLECIMIENTO,
+        CODIGO_GRUPO,
+        CODIGO_TIPO_ESTABLECIMIENTO,
+        CODIGO_REGION,
+        CODIGO_MUNICIPIO,
+        RAZON_SOCIAL,
+        DIRECCION,
+        BARRIO,
+        TELEFONOS,
+        NIT,
+        EMAIL,
+        CODIGO_ESTADO
+    )
+    VALUES (
+        P_CODIGO_ESTABLECIMIENTO,
+        P_CODIGO_GRUPO,
+        P_CODIGO_TIPO,
+        P_CODIGO_REGION,
+        P_CODIGO_MUNICIPIO,
+        P_RAZON_SOCIAL,
+        P_DIRECCION,
+        P_BARRIO,
+        P_TELEFONOS,
+        P_NIT,
+        P_EMAIL,
+        P_CODIGO_ESTADO
+    );
+EXCEPTION
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(
+            -20010,
+            'Ya existe un establecimiento con el mismo código o NIT.'
+        );
+END;
+/
+
+
+/* =========================================================
+   2. ACTUALIZAR DATOS DE CONTACTO DEL ESTABLECIMIENTO
+   ========================================================= */
+
+CREATE OR REPLACE PROCEDURE SP_ACTUALIZAR_CONTACTO_EST (
+    P_CODIGO_ESTABLECIMIENTO IN ESTABLECIMIENTOS.CODIGO_ESTABLECIMIENTO%TYPE,
+    P_TELEFONOS              IN ESTABLECIMIENTOS.TELEFONOS%TYPE,
+    P_EMAIL                  IN ESTABLECIMIENTOS.EMAIL%TYPE,
+    P_DIRECCION              IN ESTABLECIMIENTOS.DIRECCION%TYPE DEFAULT NULL,
+    P_BARRIO                 IN ESTABLECIMIENTOS.BARRIO%TYPE DEFAULT NULL
+)
+IS
+BEGIN
+    UPDATE ESTABLECIMIENTOS
+       SET TELEFONOS = P_TELEFONOS,
+           EMAIL = P_EMAIL,
+           DIRECCION = COALESCE(P_DIRECCION, DIRECCION),
+           BARRIO = COALESCE(P_BARRIO, BARRIO)
+     WHERE CODIGO_ESTABLECIMIENTO = P_CODIGO_ESTABLECIMIENTO;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(
+            -20011,
+            'No existe el establecimiento indicado.'
+        );
+    END IF;
+END;
+/
+
+
+/* =========================================================
+   3. REGISTRAR REPORTE
+   ========================================================= */
+
+CREATE OR REPLACE PROCEDURE SP_REGISTRAR_REPORTE (
+    P_CODIGO_ESTABLECIMIENTO IN REPORTES.CODIGO_ESTABLECIMIENTO%TYPE,
+    P_ID_TIPO_NOVEDAD        IN REPORTES.ID_TIPO_NOVEDAD%TYPE,
+    P_ID_ESTADO_REPORTE      IN REPORTES.ID_ESTADO_REPORTE%TYPE,
+    P_CODIGO_TIPO_REPORTANTE IN REPORTES.CODIGO_TIPO_REPORTANTE%TYPE,
+    P_NOMBRE_REPORTANTE      IN REPORTES.NOMBRE_REPORTANTE%TYPE,
+    P_DOCUMENTO_REPORTANTE   IN REPORTES.DOCUMENTO_REPORTANTE%TYPE,
+    P_OBSERVACIONES          IN REPORTES.OBSERVACIONES%TYPE DEFAULT NULL,
+    P_ID_REPORTE             OUT REPORTES.ID_REPORTE%TYPE
+)
+IS
+BEGIN
+    INSERT INTO REPORTES (
+        CODIGO_ESTABLECIMIENTO,
+        ID_TIPO_NOVEDAD,
+        ID_ESTADO_REPORTE,
+        CODIGO_TIPO_REPORTANTE,
+        NOMBRE_REPORTANTE,
+        DOCUMENTO_REPORTANTE,
+        OBSERVACIONES
+    )
+    VALUES (
+        P_CODIGO_ESTABLECIMIENTO,
+        P_ID_TIPO_NOVEDAD,
+        P_ID_ESTADO_REPORTE,
+        P_CODIGO_TIPO_REPORTANTE,
+        P_NOMBRE_REPORTANTE,
+        P_DOCUMENTO_REPORTANTE,
+        P_OBSERVACIONES
+    )
+    RETURNING ID_REPORTE INTO P_ID_REPORTE;
+END;
+/
+
+
+/* =========================================================
+   4. REGISTRAR DETALLE DE REPORTE
+   ========================================================= */
+
+CREATE OR REPLACE PROCEDURE SP_REGISTRAR_DETALLE_REPORTE (
+    P_ID_REPORTE             IN DETALLE_REPORTE.ID_REPORTE%TYPE,
+    P_ID_TIPO_NOVEDAD_CAMPO  IN DETALLE_REPORTE.ID_TIPO_NOVEDAD_CAMPO%TYPE,
+    P_VALOR                  IN DETALLE_REPORTE.VALOR%TYPE
+)
+IS
+BEGIN
+    INSERT INTO DETALLE_REPORTE (
+        ID_REPORTE,
+        ID_TIPO_NOVEDAD_CAMPO,
+        VALOR
+    )
+    VALUES (
+        P_ID_REPORTE,
+        P_ID_TIPO_NOVEDAD_CAMPO,
+        P_VALOR
+    );
+END;
+/
+
+
+/* =========================================================
+   5. CAMBIAR ESTADO DEL REPORTE
+   ========================================================= */
+
+CREATE OR REPLACE PROCEDURE SP_CAMBIAR_ESTADO_REPORTE (
+    P_ID_REPORTE        IN REPORTES.ID_REPORTE%TYPE,
+    P_ID_ESTADO_REPORTE IN REPORTES.ID_ESTADO_REPORTE%TYPE,
+    P_FECHA_NOTIFICACION IN REPORTES.FECHA_NOTIFICACION%TYPE DEFAULT NULL
+)
+IS
+BEGIN
+    UPDATE REPORTES
+       SET ID_ESTADO_REPORTE = P_ID_ESTADO_REPORTE,
+           FECHA_NOTIFICACION =
+               COALESCE(P_FECHA_NOTIFICACION, FECHA_NOTIFICACION)
+     WHERE ID_REPORTE = P_ID_REPORTE;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(
+            -20012,
+            'No existe el reporte indicado.'
+        );
+    END IF;
+END;
+/
+
+
+/* =========================================================
+   6. REGISTRAR HISTORIAL DE ACTUALIZACIÓN
+   ========================================================= */
+
+CREATE OR REPLACE PROCEDURE SP_REGISTRAR_HISTORIAL (
+    P_ID_REPORTE              IN HISTORIAL_ACTUALIZACIONES.ID_REPORTE%TYPE,
+    P_CODIGO_ESTABLECIMIENTO  IN HISTORIAL_ACTUALIZACIONES.CODIGO_ESTABLECIMIENTO%TYPE,
+    P_ID_CAMPO                IN HISTORIAL_ACTUALIZACIONES.ID_CAMPO%TYPE,
+    P_VALOR_ANTERIOR          IN HISTORIAL_ACTUALIZACIONES.VALOR_ANTERIOR%TYPE,
+    P_VALOR_NUEVO             IN HISTORIAL_ACTUALIZACIONES.VALOR_NUEVO%TYPE
+)
+IS
+BEGIN
+    INSERT INTO HISTORIAL_ACTUALIZACIONES (
+        ID_REPORTE,
+        CODIGO_ESTABLECIMIENTO,
+        ID_CAMPO,
+        VALOR_ANTERIOR,
+        VALOR_NUEVO
+    )
+    VALUES (
+        P_ID_REPORTE,
+        P_CODIGO_ESTABLECIMIENTO,
+        P_ID_CAMPO,
+        P_VALOR_ANTERIOR,
+        P_VALOR_NUEVO
+    );
+END;
+/
+
+
+/* =========================================================
+   FIN DEL SCRIPT DE PROCEDIMIENTOS
+   ========================================================= */
