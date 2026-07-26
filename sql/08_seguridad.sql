@@ -1,31 +1,31 @@
 /* =========================================================
    PROYECTO FRAMED
    Archivo: 08_seguridad.sql
-   Descripción: Seguridad y permisos de la base de datos
-   Motor: Oracle Database
+   Descripción: Seguridad
    ========================================================= */
 
 
-/* =========================================================
-   ROLES
-   ========================================================= */
+/* ROLES */
 
--- Administrador
+CREATE ROLE FRAMED_ADMIN;
 
--- Profesional
-
--- Consulta
+CREATE ROLE FRAMED_CONSULTA;
 
 
-/* =========================================================
-   PERMISOS
-   ========================================================= */
+/* PERMISOS */
 
--- SELECT
+GRANT SELECT,INSERT,UPDATE,DELETE
+ON ESTABLECIMIENTO
+TO FRAMED_ADMIN;
 
--- INSERT
+GRANT SELECT
+ON ESTABLECIMIENTO
+TO FRAMED_CONSULTA;
 
--- UPDATE
+GRANT SELECT
+ON REPORTES
+TO FRAMED_CONSULTA;
 
--- DELETE
-
+GRANT SELECT
+ON NOVEDADES
+TO FRAMED_CONSULTA;
